@@ -170,10 +170,18 @@
   <!-- Ivy-based dependency resolution -->
   <property name="ivysettings.xml" location="${ivy.dir}/ivysettings.xml"/>
   <property name="ivy.jar" location="${lib.dir}/ivy-${ivy.version}.jar"/>
+
+<!--  <property name="ivy_repo_url"-->
+<!--  value="https://repo.maven.apache.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />-->
+<!--  <property name="mvn_repo_url"-->
+<!--  value="https://repo.maven.apache.org/maven2/org/apache/maven/maven-ant-tasks/${mvn.version}/maven-ant-tasks-${mvn.version}.jar"/>-->
+
   <property name="ivy_repo_url"
-  value="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />
+            value="https://maven.aliyun.com/repository/central/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />
   <property name="mvn_repo_url"
-  value="http://repo2.maven.org/maven2/org/apache/maven/maven-ant-tasks/${mvn.version}/maven-ant-tasks-${mvn.version}.jar"/>
+            value="https://maven.aliyun.com/repository/central/org/apache/maven/maven-ant-tasks/${mvn.version}/maven-ant-tasks-${mvn.version}.jar"/>
+
+
   <property name="mvn.jar"
       location="${build.dir}/maven-ant-tasks-${mvn.version}.jar" />
   <property name="build.ivy.dir" location="${build.dir}/ivy" />
@@ -491,8 +499,12 @@
   </target>
 
   <target name="package"
-      depends="jar-all,compile-all,docs,ivy-retrieve-redist,scripts"
+      depends="jar-all,compile-all,ivy-retrieve-redist,scripts"
       description="Create a redistributable package">
+
+<!--  <target name="package"-->
+<!--          depends="jar-all,compile-all,docs,ivy-retrieve-redist,scripts"-->
+<!--          description="Create a redistributable package">-->
 
     <mkdir dir="${dist.dir}"/>
 
@@ -542,18 +554,18 @@
     </copy>
 
     <!-- copy in documentation build artifacts -->
-    <copy todir="${dist.dir}/docs" includeEmptyDirs="false" flatten="false">
-      <fileset dir="${build.dir}/docs">
-        <include name="**/*.html" />
-        <include name="**/*.css" />
-        <include name="images/**" />
-      </fileset>
-    </copy>
-    <copy todir="${dist.dir}/docs/man" includeEmptyDirs="false" flatten="false">
-      <fileset dir="${build.dir}/docs">
-        <include name="**/*.gz" />
-      </fileset>
-    </copy>
+<!--    <copy todir="${dist.dir}/docs" includeEmptyDirs="false" flatten="false">-->
+<!--      <fileset dir="${build.dir}/docs">-->
+<!--        <include name="**/*.html" />-->
+<!--        <include name="**/*.css" />-->
+<!--        <include name="images/**" />-->
+<!--      </fileset>-->
+<!--    </copy>-->
+<!--    <copy todir="${dist.dir}/docs/man" includeEmptyDirs="false" flatten="false">-->
+<!--      <fileset dir="${build.dir}/docs">-->
+<!--        <include name="**/*.gz" />-->
+<!--      </fileset>-->
+<!--    </copy>-->
 
     <!-- copy in auto-generated bin scripts -->
     <copy todir="${dist.dir}/bin" includeEmptyDirs="false" flatten="true">
@@ -1070,52 +1082,52 @@
 
   </target>
 
-  <target name="docs" depends="real-docs,relnotes,javadoc"
-      description="Build documentation"/>
+<!--  <target name="docs" depends="real-docs,relnotes,javadoc"-->
+<!--      description="Build documentation"/>-->
 
-  <target name="real-docs" depends="docs-uptodate,init" unless="skip-real-docs">
-    <exec executable="make" failonerror="true">
-      <arg value="-C" />
-      <arg value="${basedir}/src/docs" />
-      <arg value="BUILDROOT=${build.dir}" />
-      <arg value="VERSION=${version}" />
-    </exec>
-    <touch file="${build.docs.timestamp}" />
-  </target>
+<!--  <target name="real-docs" depends="docs-uptodate,init" unless="skip-real-docs">-->
+<!--    <exec executable="make" failonerror="true">-->
+<!--      <arg value="-C" />-->
+<!--      <arg value="${basedir}/src/docs" />-->
+<!--      <arg value="BUILDROOT=${build.dir}" />-->
+<!--      <arg value="VERSION=${version}" />-->
+<!--    </exec>-->
+<!--    <touch file="${build.docs.timestamp}" />-->
+<!--  </target>-->
 
-  <target name="javadoc-uptodate" depends="init">
-    <uptodate property="javadoc.is.uptodate">
-      <srcfiles dir="${src.dir}">
-        <include name="**/*.java" />
-        <include name="**/*.html" />
-      </srcfiles>
-      <mapper type="merge" to="${build.javadoc}/index.html" />
-    </uptodate>
-  </target>
+<!--  <target name="javadoc-uptodate" depends="init">-->
+<!--    <uptodate property="javadoc.is.uptodate">-->
+<!--      <srcfiles dir="${src.dir}">-->
+<!--        <include name="**/*.java" />-->
+<!--        <include name="**/*.html" />-->
+<!--      </srcfiles>-->
+<!--      <mapper type="merge" to="${build.javadoc}/index.html" />-->
+<!--    </uptodate>-->
+<!--  </target>-->
 
-  <target name="javadoc" description="Build javadoc"
-      depends="init,javadoc-uptodate,compile" unless="javadoc.is.uptodate">
-    <mkdir dir="${build.javadoc}" />
-    <exec executable="date" outputproperty="year">
-      <arg value="+%Y" />
-    </exec>
-    <javadoc
-      destdir="${build.javadoc}"
-      author="true"
-      version="true"
-      use="true"
-      windowtitle="${Name} ${version} API"
-      doctitle="${Name} ${version} API"
-      bottom="Copyright &amp;copy; ${year} The Apache Software Foundation">
-      <packageset dir="${src.dir}">
-        <include name="com/cloudera/sqoop/lib/**" />
-        <include name="org/apache/sqoop/lib/**" />
-      </packageset>
-      <classpath>
-        <path refid="compile.classpath" />
-      </classpath>
-    </javadoc>
-  </target>
+<!--  <target name="javadoc" description="Build javadoc"-->
+<!--      depends="init,javadoc-uptodate,compile" unless="javadoc.is.uptodate">-->
+<!--    <mkdir dir="${build.javadoc}" />-->
+<!--    <exec executable="date" outputproperty="year">-->
+<!--      <arg value="+%Y" />-->
+<!--    </exec>-->
+<!--    <javadoc-->
+<!--      destdir="${build.javadoc}"-->
+<!--      author="true"-->
+<!--      version="true"-->
+<!--      use="true"-->
+<!--      windowtitle="${Name} ${version} API"-->
+<!--      doctitle="${Name} ${version} API"-->
+<!--      bottom="Copyright &amp;copy; ${year} The Apache Software Foundation">-->
+<!--      <packageset dir="${src.dir}">-->
+<!--        <include name="com/cloudera/sqoop/lib/**" />-->
+<!--        <include name="org/apache/sqoop/lib/**" />-->
+<!--      </packageset>-->
+<!--      <classpath>-->
+<!--        <path refid="compile.classpath" />-->
+<!--      </classpath>-->
+<!--    </javadoc>-->
+<!--  </target>-->
 
   <target name="checkfailure" depends="test-core" if="tests.failed">
     <touch file="${build.dir}/testsfailed"/>
