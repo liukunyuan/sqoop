@@ -235,6 +235,8 @@ public class DBRecordReader<T extends DBWritable> extends
         this.results = executeQuery(getSelectQuery());
       }
       if (!results.next()) {
+        LOG.info("results next is false");
+        LOG.info("pos is:" + pos);
         return false;
       }
 
